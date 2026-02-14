@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BlesProduction — Side Orbit Space QR Generator</title>
+<title>BlesProduction — QR Generator</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -44,8 +44,6 @@
     pointer-events:none;
     user-select:none;
   }
-
-  /* Middle stays calm (optional subtle haze only) */
   .space .center-calm{
     position:absolute; inset:0;
     background:
@@ -53,29 +51,14 @@
       radial-gradient(800px 560px at 50% 80%, rgba(255,255,255,.015), transparent 65%);
     opacity:.7;
   }
-
-  /* Side rails: animations live ONLY here */
   .side{
-    position:absolute;
-    top:0;
-    height:100%;
+    position:absolute; top:0; height:100%;
     width:22%;
     overflow:hidden;
-    pointer-events:none;
-    user-select:none;
   }
-  .side.left{ left:0; }
-  .side.right{ right:0; }
+  .side.left{ left:0; background: radial-gradient(circle at left center, rgba(124,58,237,.10), transparent 70%); }
+  .side.right{ right:0; background: radial-gradient(circle at right center, rgba(34,211,238,.10), transparent 70%); }
 
-  /* Soft glow from sides */
-  .side.left{
-    background: radial-gradient(circle at left center, rgba(124,58,237,.10), transparent 70%);
-  }
-  .side.right{
-    background: radial-gradient(circle at right center, rgba(34,211,238,.10), transparent 70%);
-  }
-
-  /* Stars (ultra minimal) — only inside side rails */
   .stars, .stars2, .stars3{
     position:absolute; inset:-220px;
     background-repeat: repeat;
@@ -115,18 +98,15 @@
       radial-gradient(1px 1px at 40% 90%, rgba(255,255,255,.45) 50%, transparent 51%);
     background-size: 420px 420px;
   }
-
   @keyframes drift{
     from{ transform: translate3d(0,0,0); }
     to{ transform: translate3d(-160px, 110px, 0); }
   }
 
-  /* Side-only "orbit spin" (putaran animasi di samping) */
   .orbit{
-    position:absolute;
-    inset:-30%;
-    border-radius: 50%;
-    opacity:.22;
+    position:absolute; inset:-30%;
+    border-radius:50%;
+    opacity:.20;
     filter: blur(10px);
     background: conic-gradient(
       from 0deg,
@@ -137,17 +117,12 @@
       rgba(34,211,238,.35)
     );
     animation: spin 22s linear infinite;
-    transform: translateZ(0);
   }
-  .side.right .orbit{
-    animation-duration: 28s;
-    opacity:.18;
-  }
+  .side.right .orbit{ animation-duration: 28s; opacity:.16; }
   .orbit::after{
     content:"";
-    position:absolute;
-    inset: 18%;
-    border-radius: 50%;
+    position:absolute; inset: 18%;
+    border-radius:50%;
     background: conic-gradient(
       from 180deg,
       rgba(255,255,255,.05),
@@ -160,16 +135,11 @@
     opacity:.8;
     animation: spin 36s linear infinite reverse;
   }
-
   @keyframes spin{ to{ transform: rotate(360deg); } }
 
-  /* Planets: placed INSIDE side rails so never cross middle */
   .planet{
-    position:absolute;
-    border-radius:50%;
+    position:absolute; border-radius:50%;
     opacity:.14;
-    filter:none;
-    transform: translateZ(0);
     animation: float 34s ease-in-out infinite;
   }
   .planet.p1{
@@ -201,41 +171,27 @@
     50%{ transform: translate(10px, -12px) rotate(4deg); }
   }
 
-  /* Rare meteors: only inside side rails, short travel (never across center) */
-  .meteor-field{
-    position:absolute;
-    inset:0;
-    overflow:hidden;
-    pointer-events:none;
-    user-select:none;
-  }
-
+  .meteor-field{ position:absolute; inset:0; overflow:hidden; }
   .meteor{
     position:absolute;
-    width: 190px;
-    height: 2px;
+    width: 190px; height: 2px;
     background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.60), rgba(255,255,255,0));
     opacity: 0;
     filter: blur(.15px);
   }
   .meteor::after{
     content:"";
-    position:absolute;
-    left:-140px;
-    top:50%;
+    position:absolute; left:-140px; top:50%;
     transform: translateY(-50%);
-    width: 140px;
-    height: 2px;
+    width: 140px; height: 2px;
     background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.20));
-    opacity: .9;
+    opacity:.9;
   }
 
-  /* Left meteors (fly within left rail only) */
   .left .meteor{ transform: rotate(25deg); left:-60%; }
   .left .meteor:nth-child(1){ top: 12%; animation: meteorLeft 48s ease-in-out infinite; animation-delay: 10s; }
   .left .meteor:nth-child(2){ top: 32%; width: 230px; animation: meteorLeft 62s ease-in-out infinite; animation-delay: 26s; }
   .left .meteor:nth-child(3){ top: 48%; width: 170px; animation: meteorLeft 74s ease-in-out infinite; animation-delay: 38s; }
-
   @keyframes meteorLeft{
     0%, 93% { opacity:0; transform: translate3d(-40%, -20%, 0) rotate(25deg); }
     94% { opacity:.20; }
@@ -243,12 +199,10 @@
     100% { opacity:0; transform: translate3d(40%, 40%, 0) rotate(25deg); }
   }
 
-  /* Right meteors (fly within right rail only) */
   .right .meteor{ transform: rotate(-25deg); right:-60%; }
   .right .meteor:nth-child(1){ top: 18%; animation: meteorRight 54s ease-in-out infinite; animation-delay: 14s; }
   .right .meteor:nth-child(2){ top: 36%; width: 230px; animation: meteorRight 66s ease-in-out infinite; animation-delay: 28s; }
   .right .meteor:nth-child(3){ top: 52%; width: 170px; animation: meteorRight 78s ease-in-out infinite; animation-delay: 44s; }
-
   @keyframes meteorRight{
     0%, 93% { opacity:0; transform: translate3d(40%, -20%, 0) rotate(-25deg); }
     94% { opacity:.18; }
@@ -256,7 +210,7 @@
     100% { opacity:0; transform: translate3d(-40%, 40%, 0) rotate(-25deg); }
   }
 
-  /* ====== MAIN UI ====== */
+  /* ====== UI ====== */
   .wrap{
     min-height:100%;
     display:flex;
@@ -266,20 +220,6 @@
     position: relative;
     z-index: 5;
   }
-
-  /* subtle side glow overlay on top of background (still behind card) */
-  .wrap::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:
-      radial-gradient(circle at left center, rgba(124,58,237,.06), transparent 46%),
-      radial-gradient(circle at right center, rgba(34,211,238,.06), transparent 46%);
-    opacity:.9;
-    z-index:-1;
-  }
-
   .panel{
     width: min(520px, 100%);
     background: var(--panel);
@@ -288,11 +228,7 @@
     padding: 22px;
     box-shadow: var(--shadow);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    position:relative;
   }
-
-  /* Neon moving border (subtle) */
   .neon-border{
     position:relative;
     border-radius: 22px;
@@ -330,16 +266,14 @@
   @keyframes spinCard{ to{ transform: rotate(360deg); } }
 
   .head{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    justify-content:space-between;
-    margin-bottom: 14px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-bottom: 10px;
   }
-  .title{ text-align:left; line-height:1.1; }
-  .title h1{ margin:0; font-size: 20px; letter-spacing:.2px; }
-  .title p{ margin: 8px 0 0 0; color: var(--muted); font-size: 13px; }
-
+  .title h1{
+    margin:0;
+    font-size: 18px;
+    letter-spacing:.2px;
+  }
   .badge{
     font-size:12px;
     padding:8px 10px;
@@ -350,56 +284,77 @@
     white-space:nowrap;
   }
 
-  .field{ display:flex; gap:10px; margin-top: 14px; }
+  /* Input w/ clear */
+  .inputWrap{ position:relative; margin-top: 10px; }
   input{
-    flex:1;
     width:100%;
-    padding: 12px 12px;
+    padding: 12px 42px 12px 12px;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.30);
     color: var(--text);
-    outline: none;
+    outline:none;
     font-size: 15px;
   }
-  input::placeholder{ color: rgba(166,176,204,.75); }
   input:focus{
     border-color: rgba(34,211,238,.45);
     box-shadow: 0 0 0 4px rgba(34,211,238,.10);
   }
-
-  .btns{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top: 12px;
+  .clearBtn{
+    position:absolute; right:10px; top:50%;
+    transform: translateY(-50%);
+    width: 28px; height:28px;
+    border-radius: 10px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    color: rgba(234,240,255,.92);
+    cursor:pointer;
   }
+
+  .btns{ display:flex; gap:10px; margin-top: 12px; }
   button{
     flex:1;
-    min-width: 120px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.08);
     color: var(--text);
     padding: 11px 12px;
     border-radius: 14px;
     cursor:pointer;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing:.2px;
-    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    transition: transform .12s ease, background .12s ease;
   }
-  button:hover{
-    transform: translateY(-1px);
-    background: rgba(255,255,255,.12);
-    border-color: rgba(255,255,255,.18);
-  }
-  button:active{ transform: translateY(0); }
+  button:hover{ transform: translateY(-1px); background: rgba(255,255,255,.12); }
+  button:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
   .primary{
-    background: linear-gradient(135deg, rgba(34,211,238,.18), rgba(124,58,237,.18));
+    background: linear-gradient(135deg, rgba(34,211,238,.20), rgba(124,58,237,.20));
     border-color: rgba(34,211,238,.30);
   }
 
+  /* Loading small (no overlay) */
+  .miniLoad{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top: 10px;
+    color: rgba(166,176,204,.92);
+    font-size: 13px;
+  }
+  .dot{
+    width:7px;height:7px;border-radius:999px;
+    background: rgba(34,211,238,.9);
+    animation: pulse .9s infinite ease-in-out;
+  }
+  .dot:nth-child(2){ animation-delay:.15s; opacity:.8 }
+  .dot:nth-child(3){ animation-delay:.3s; opacity:.6 }
+  @keyframes pulse{
+    0%,100%{ transform: translateY(0); opacity:.55; }
+    50%{ transform: translateY(-4px); opacity:1; }
+  }
+
   .qrwrap{
-    margin-top: 16px;
+    margin-top: 14px;
     padding: 14px;
     border-radius: 18px;
     background: rgba(0,0,0,.28);
@@ -408,15 +363,12 @@
   }
   #qrcode{
     display:inline-block;
-    background: #fff;
-    border-radius: 14px;
+    background:#fff;
+    border-radius:14px;
     padding: 12px;
     box-shadow: 0 14px 40px rgba(0,0,0,.45);
   }
-  #qrcode img, #qrcode canvas{
-    display:block;
-    border-radius: 10px;
-  }
+  #qrcode img, #qrcode canvas{ display:block; border-radius:10px; }
 
   .status{
     margin-top: 10px;
@@ -426,7 +378,7 @@
   }
 
   .check{
-    width: 58px; height:58px;
+    width: 56px; height:56px;
     margin: 8px auto 0;
     border-radius: 50%;
     display:none;
@@ -440,37 +392,32 @@
     width: 30px; height:30px;
     stroke: rgba(52,211,153,.95);
     stroke-width: 3.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:48;
+    stroke-dashoffset:48;
     animation: draw .55s ease forwards;
   }
   @keyframes draw{ to{ stroke-dashoffset: 0; } }
 
   .foot{
-    margin-top: 16px;
+    margin-top: 14px;
     color: rgba(166,176,204,.75);
     font-size: 12px;
     text-align:center;
   }
 
-  /* Scan focus (optional): reduce side anim a bit while QR appears */
   body.scan-focus .side{ opacity:.80; transition: opacity .35s ease; }
 
-  @media (max-width: 900px){
-    .side{ width: 18%; }
-  }
   @media (max-width: 520px){
-    .side{ width: 16%; }
+    .side{ width:16%; }
     .panel{ padding: 18px; }
-    button{ min-width: 0; }
   }
 
   @media print{
     body{ background:#fff; color:#000; }
-    .space, .head, .field, .btns, .status, .foot{ display:none !important; }
+    .space, .head, .inputWrap, .btns, .miniLoad, .status, .foot{ display:none !important; }
     .panel{ box-shadow:none; border:none; background:transparent; }
     .qrwrap{ border:none; background:transparent; }
     #qrcode{ box-shadow:none; }
@@ -479,38 +426,24 @@
 </head>
 
 <body>
-  <!-- SIDE-ONLY SPACE ANIMATION -->
   <div class="space">
     <div class="center-calm"></div>
 
     <div class="side left">
-      <div class="stars"></div>
-      <div class="stars2"></div>
-      <div class="stars3"></div>
+      <div class="stars"></div><div class="stars2"></div><div class="stars3"></div>
       <div class="orbit"></div>
-
       <div class="planet p1"></div>
-
-      <div class="meteor-field">
-        <span class="meteor"></span>
-        <span class="meteor"></span>
-        <span class="meteor"></span>
+      <div class="meteor-field left">
+        <span class="meteor"></span><span class="meteor"></span><span class="meteor"></span>
       </div>
     </div>
 
     <div class="side right">
-      <div class="stars"></div>
-      <div class="stars2"></div>
-      <div class="stars3"></div>
+      <div class="stars"></div><div class="stars2"></div><div class="stars3"></div>
       <div class="orbit"></div>
-
-      <div class="planet p2"></div>
-      <div class="planet p3"></div>
-
-      <div class="meteor-field">
-        <span class="meteor"></span>
-        <span class="meteor"></span>
-        <span class="meteor"></span>
+      <div class="planet p2"></div><div class="planet p3"></div>
+      <div class="meteor-field right">
+        <span class="meteor"></span><span class="meteor"></span><span class="meteor"></span>
       </div>
     </div>
   </div>
@@ -519,31 +452,33 @@
     <div class="neon-border">
       <div class="panel">
         <div class="head">
-          <div class="title">
-            <h1>QR Code Generator</h1>
-            <p>Putaran animasi hanya di samping • tengah fokus untuk QR</p>
-          </div>
+          <div class="title"><h1>QR Generator</h1></div>
           <div class="badge">BlesProduction</div>
         </div>
 
-        <div class="field">
-          <input id="inputData" type="text" placeholder="Masukkan teks atau URL (contoh: https://bles-ai.vercel.app/)" />
+        <div class="inputWrap">
+          <input id="inputData" type="text" placeholder="Masukkan teks atau URL" autocomplete="off" />
+          <button class="clearBtn" id="clearBtn" title="Clear">×</button>
         </div>
 
         <div class="btns">
           <button class="primary" id="generateBtn">Generate</button>
-          <button id="downloadBtn">Download</button>
-          <button id="printBtn">Print</button>
+          <button id="copyBtn" disabled>Copy</button>
+          <button id="downloadBtn" disabled>Download</button>
+          <button id="printBtn" disabled>Print</button>
         </div>
 
-        <div class="neon-border" style="border-radius:18px; margin-top:14px;">
+        <div class="miniLoad" id="miniLoad" aria-hidden="true">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span>Sedang membuat QR…</span>
+        </div>
+
+        <div class="neon-border" style="border-radius:18px; margin-top:12px;">
           <div class="qrwrap">
             <div id="qrcode" aria-label="QR Code"></div>
 
             <div class="check" id="check">
-              <svg viewBox="0 0 24 24">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
+              <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
             </div>
 
             <div class="status" id="statusText"></div>
@@ -560,8 +495,21 @@
   const qrcodeContainer = document.getElementById("qrcode");
   const statusText = document.getElementById("statusText");
   const check = document.getElementById("check");
+  const miniLoad = document.getElementById("miniLoad");
+
+  const btnGenerate = document.getElementById("generateBtn");
+  const btnCopy = document.getElementById("copyBtn");
+  const btnDownload = document.getElementById("downloadBtn");
+  const btnPrint = document.getElementById("printBtn");
+  const btnClear = document.getElementById("clearBtn");
 
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  function setEnabled(hasQR){
+    btnCopy.disabled = !hasQR;
+    btnDownload.disabled = !hasQR;
+    btnPrint.disabled = !hasQR;
+  }
 
   function getQRImageSrc(){
     const img = qrcodeContainer.querySelector("img");
@@ -571,57 +519,80 @@
     return null;
   }
 
+  async function copyQR(){
+    const src = getQRImageSrc();
+    if (!src) return;
+    try{
+      const res = await fetch(src);
+      const blob = await res.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob })
+      ]);
+      statusText.textContent = "✅ QR tersalin (image)";
+      if (navigator.vibrate) navigator.vibrate(40);
+    } catch {
+      statusText.textContent = "Copy image tidak didukung. (Coba Download)";
+    }
+  }
+
   function showSuccess(msg){
     statusText.textContent = msg;
     check.style.display = "flex";
 
-    // restart svg animation
     const svg = check.querySelector("svg");
     svg.style.animation = "none";
     void svg.offsetWidth;
     svg.style.animation = "";
 
-    // subtle vibration (mobile)
     if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
 
-    // scan focus: calm down sides briefly
     document.body.classList.add("scan-focus");
-    setTimeout(()=>document.body.classList.remove("scan-focus"), 1500);
+    setTimeout(()=>document.body.classList.remove("scan-focus"), 1200);
   }
 
-  function clearSuccess(){
+  function clearUI(){
     statusText.textContent = "";
     check.style.display = "none";
+    miniLoad.style.display = "none";
+    setEnabled(false);
   }
 
-  function generateQRCode() {
+  function setLoading(on){
+    miniLoad.style.display = on ? "flex" : "none";
+    btnGenerate.disabled = on;
+  }
+
+  function generateQRCode(){
     const data = inputData.value.trim();
     if (!data) {
       alert("Masukkan teks atau URL terlebih dahulu.");
       return;
     }
 
-    clearSuccess();
-    qrcodeContainer.innerHTML = "";
+    clearUI();
+    setLoading(true);
 
-    new QRCode(qrcodeContainer, {
-      text: data,
-      width: 240,
-      height: 240,
-      colorDark: "#000000",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
-    });
+    // kecil delay biar animasi loading terlihat halus
+    setTimeout(() => {
+      qrcodeContainer.innerHTML = "";
+      new QRCode(qrcodeContainer, {
+        text: data,
+        width: 240,
+        height: 240,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
 
-    showSuccess("✔ QR Code berhasil dibuat");
+      setLoading(false);
+      setEnabled(true);
+      showSuccess("✔ QR berhasil dibuat");
+    }, 220);
   }
 
-  function downloadQR() {
+  function downloadQR(){
     const src = getQRImageSrc();
-    if (!src) {
-      alert("Generate QR terlebih dahulu.");
-      return;
-    }
+    if (!src) return alert("Generate QR terlebih dahulu.");
     const a = document.createElement("a");
     a.href = src;
     a.download = "BlesProduction-QRCode.png";
@@ -630,12 +601,9 @@
     a.remove();
   }
 
-  function printQR() {
+  function printQR(){
     const src = getQRImageSrc();
-    if (!src) {
-      alert("Generate QR terlebih dahulu.");
-      return;
-    }
+    if (!src) return alert("Generate QR terlebih dahulu.");
     const w = window.open("");
     w.document.write(`
       <html><head><title>Print QR</title>
@@ -648,13 +616,26 @@
     w.document.close();
   }
 
-  document.getElementById("generateBtn").addEventListener("click", generateQRCode);
-  document.getElementById("downloadBtn").addEventListener("click", downloadQR);
-  document.getElementById("printBtn").addEventListener("click", printQR);
+  function clearAll(){
+    inputData.value = "";
+    qrcodeContainer.innerHTML = "";
+    clearUI();
+    inputData.focus();
+  }
+
+  btnGenerate.addEventListener("click", generateQRCode);
+  btnDownload.addEventListener("click", downloadQR);
+  btnPrint.addEventListener("click", printQR);
+  btnCopy.addEventListener("click", copyQR);
+  btnClear.addEventListener("click", clearAll);
 
   inputData.addEventListener("keydown", (e) => {
     if (e.key === "Enter") generateQRCode();
+    if (e.key === "Escape") clearAll();
   });
+
+  // init state
+  clearUI();
 </script>
 </body>
 </html>
