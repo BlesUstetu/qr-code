@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BlesProduction — Ultra Minimal Space QR Generator</title>
+<title>BlesProduction</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -28,34 +28,63 @@
     margin:0;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
     color: var(--text);
-    background: radial-gradient(1200px 800px at 20% 10%, rgba(124,58,237,.12), transparent 55%),
-                radial-gradient(1000px 700px at 80% 30%, rgba(34,211,238,.10), transparent 55%),
-                radial-gradient(1000px 700px at 50% 85%, rgba(52,211,153,.08), transparent 60%),
-                var(--bg);
+    background:
+      radial-gradient(1200px 800px at 20% 10%, rgba(124,58,237,.10), transparent 55%),
+      radial-gradient(1000px 700px at 80% 30%, rgba(34,211,238,.08), transparent 55%),
+      radial-gradient(1000px 700px at 50% 85%, rgba(52,211,153,.06), transparent 60%),
+      var(--bg);
     overflow-x:hidden;
   }
 
-  /* ====== SPACE BACKGROUND (ULTRA MINIMAL) ====== */
+  /* ====== SIDE-ONLY ANIMATION LAYER ====== */
   .space{
-    position:fixed; inset:0;
+    position:fixed;
+    inset:0;
     z-index:-5;
     pointer-events:none;
     user-select:none;
-    opacity: 1;
   }
 
-  .stars, .stars2, .stars3{
-    position:absolute; inset:-240px;
-    background-repeat: repeat;
-    transform: translateZ(0);
+  /* Middle stays calm (optional subtle haze only) */
+  .space .center-calm{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(600px 420px at 50% 40%, rgba(255,255,255,.02), transparent 60%),
+      radial-gradient(800px 560px at 50% 80%, rgba(255,255,255,.015), transparent 65%);
+    opacity:.7;
+  }
+
+  /* Side rails: animations live ONLY here */
+  .side{
+    position:absolute;
+    top:0;
+    height:100%;
+    width:22%;
+    overflow:hidden;
     pointer-events:none;
     user-select:none;
-    filter:none;
+  }
+  .side.left{ left:0; }
+  .side.right{ right:0; }
+
+  /* Soft glow from sides */
+  .side.left{
+    background: radial-gradient(circle at left center, rgba(124,58,237,.10), transparent 70%);
+  }
+  .side.right{
+    background: radial-gradient(circle at right center, rgba(34,211,238,.10), transparent 70%);
   }
 
-  .stars{
+  /* Stars (ultra minimal) — only inside side rails */
+  .stars, .stars2, .stars3{
+    position:absolute; inset:-220px;
+    background-repeat: repeat;
+    transform: translateZ(0);
+    filter:none;
     opacity:.18;
-    animation: drift 220s linear infinite;
+    animation: drift 260s linear infinite;
+  }
+  .stars{
     background-image:
       radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.85) 50%, transparent 51%),
       radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,.65) 50%, transparent 51%),
@@ -65,10 +94,9 @@
       radial-gradient(1px 1px at 80% 85%, rgba(255,255,255,.60) 50%, transparent 51%);
     background-size: 260px 260px;
   }
-
   .stars2{
     opacity:.12;
-    animation: drift 320s linear infinite;
+    animation-duration: 360s;
     background-image:
       radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,.70) 50%, transparent 51%),
       radial-gradient(1px 1px at 45% 15%, rgba(255,255,255,.60) 50%, transparent 51%),
@@ -77,10 +105,9 @@
       radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,.60) 50%, transparent 51%);
     background-size: 340px 340px;
   }
-
   .stars3{
     opacity:.08;
-    animation: drift 420s linear infinite;
+    animation-duration: 460s;
     background-image:
       radial-gradient(1px 1px at 20% 10%, rgba(255,255,255,.55) 50%, transparent 51%),
       radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,.50) 50%, transparent 51%),
@@ -91,101 +118,106 @@
 
   @keyframes drift{
     from{ transform: translate3d(0,0,0); }
-    to{ transform: translate3d(-180px, 120px, 0); }
+    to{ transform: translate3d(-160px, 110px, 0); }
   }
 
-  .twinkle{
-    position:absolute; inset:0;
-    background:
-      radial-gradient(700px 450px at 15% 20%, rgba(255,255,255,.05), transparent 60%),
-      radial-gradient(600px 400px at 85% 30%, rgba(255,255,255,.04), transparent 62%),
-      radial-gradient(800px 520px at 45% 90%, rgba(255,255,255,.03), transparent 64%);
-    animation: tw 12s ease-in-out infinite;
-    opacity:.10;
-    pointer-events:none;
-    user-select:none;
+  /* Side-only "orbit spin" (putaran animasi di samping) */
+  .orbit{
+    position:absolute;
+    inset:-30%;
+    border-radius: 50%;
+    opacity:.22;
+    filter: blur(10px);
+    background: conic-gradient(
+      from 0deg,
+      rgba(34,211,238,.35),
+      rgba(124,58,237,.35),
+      rgba(244,114,182,.30),
+      rgba(52,211,153,.30),
+      rgba(34,211,238,.35)
+    );
+    animation: spin 22s linear infinite;
+    transform: translateZ(0);
   }
-  @keyframes tw{
-    0%,100%{ opacity:.08; }
-    50%{ opacity:.12; }
+  .side.right .orbit{
+    animation-duration: 28s;
+    opacity:.18;
+  }
+  .orbit::after{
+    content:"";
+    position:absolute;
+    inset: 18%;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 180deg,
+      rgba(255,255,255,.05),
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.04),
+      rgba(255,255,255,0) 75%,
+      rgba(255,255,255,.05)
+    );
+    filter: blur(6px);
+    opacity:.8;
+    animation: spin 36s linear infinite reverse;
   }
 
-  /* Planets ultra minimal (tidak mengganggu) */
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* Planets: placed INSIDE side rails so never cross middle */
   .planet{
     position:absolute;
     border-radius:50%;
-    transform: translateZ(0);
-    opacity:.10;
-    pointer-events:none;
-    user-select:none;
+    opacity:.14;
     filter:none;
+    transform: translateZ(0);
+    animation: float 34s ease-in-out infinite;
   }
   .planet.p1{
     width: 220px; height:220px;
-    left: -150px; top: 22%;
+    left: -120px; top: 24%;
     background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 40%),
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), transparent 40%),
       radial-gradient(circle at 45% 55%, rgba(34,211,238,.22), rgba(124,58,237,.10) 55%, rgba(0,0,0,.12) 75%);
-    animation: float1 28s ease-in-out infinite;
   }
   .planet.p2{
     width: 160px; height:160px;
-    right: -150px; top: 12%;
+    right: -110px; top: 12%;
     background:
-      radial-gradient(circle at 25% 25%, rgba(255,255,255,.16), transparent 38%),
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,.14), transparent 38%),
       radial-gradient(circle at 40% 60%, rgba(244,114,182,.18), rgba(34,211,238,.08) 55%, rgba(0,0,0,.12) 78%);
-    animation: float2 32s ease-in-out infinite;
+    animation-duration: 40s;
   }
   .planet.p3{
     width: 260px; height:260px;
-    right: 12%; bottom: -210px;
+    right: -150px; bottom: -170px;
     background:
-      radial-gradient(circle at 30% 25%, rgba(255,255,255,.14), transparent 40%),
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.12), transparent 40%),
       radial-gradient(circle at 45% 55%, rgba(52,211,153,.16), rgba(124,58,237,.08) 60%, rgba(0,0,0,.12) 80%);
-    animation: float3 36s ease-in-out infinite;
-    opacity:.09;
+    opacity:.12;
+    animation-duration: 46s;
+  }
+  @keyframes float{
+    0%,100%{ transform: translate(0,0) rotate(0deg); }
+    50%{ transform: translate(10px, -12px) rotate(4deg); }
   }
 
-  @keyframes float1{
-    0%,100%{ transform: translate(0,0) rotate(0deg); }
-    50%{ transform: translate(12px, -14px) rotate(4deg); }
-  }
-  @keyframes float2{
-    0%,100%{ transform: translate(0,0) rotate(0deg); }
-    50%{ transform: translate(-10px, 12px) rotate(-4deg); }
-  }
-  @keyframes float3{
-    0%,100%{ transform: translate(0,0) rotate(0deg); }
-    50%{ transform: translate(8px, -12px) rotate(3deg); }
-  }
-
-  /* ====== RARE METEOR ====== */
+  /* Rare meteors: only inside side rails, short travel (never across center) */
   .meteor-field{
     position:absolute;
     inset:0;
     overflow:hidden;
-    z-index:-4;
     pointer-events:none;
     user-select:none;
   }
 
   .meteor{
     position:absolute;
-    top:-20%;
-    left:-30%;
-    width: 180px;
+    width: 190px;
     height: 2px;
-    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.65), rgba(255,255,255,0));
-    transform: rotate(25deg);
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.60), rgba(255,255,255,0));
     opacity: 0;
     filter: blur(.15px);
-    animation-name: meteorFly;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    pointer-events:none;
-    user-select:none;
   }
-
   .meteor::after{
     content:"";
     position:absolute;
@@ -194,39 +226,37 @@
     transform: translateY(-50%);
     width: 140px;
     height: 2px;
-    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.22));
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.20));
     opacity: .9;
   }
 
-  .meteor-field .meteor:nth-child(1){
-    top: 14%;
-    animation-duration: 42s;
-    animation-delay: 12s;
-  }
-  .meteor-field .meteor:nth-child(2){
-    top: 30%;
-    width: 220px;
-    animation-duration: 56s;
-    animation-delay: 24s;
-  }
-  .meteor-field .meteor:nth-child(3){
-    top: 46%;
-    width: 160px;
-    animation-duration: 68s;
-    animation-delay: 36s;
+  /* Left meteors (fly within left rail only) */
+  .left .meteor{ transform: rotate(25deg); left:-60%; }
+  .left .meteor:nth-child(1){ top: 12%; animation: meteorLeft 48s ease-in-out infinite; animation-delay: 10s; }
+  .left .meteor:nth-child(2){ top: 32%; width: 230px; animation: meteorLeft 62s ease-in-out infinite; animation-delay: 26s; }
+  .left .meteor:nth-child(3){ top: 48%; width: 170px; animation: meteorLeft 74s ease-in-out infinite; animation-delay: 38s; }
+
+  @keyframes meteorLeft{
+    0%, 93% { opacity:0; transform: translate3d(-40%, -20%, 0) rotate(25deg); }
+    94% { opacity:.20; }
+    96% { opacity:.42; }
+    100% { opacity:0; transform: translate3d(40%, 40%, 0) rotate(25deg); }
   }
 
-  @keyframes meteorFly{
-    0%, 93% { opacity: 0; transform: translate3d(-30vw,-10vh,0) rotate(25deg); }
-    94% { opacity: .22; }
-    96% { opacity: .42; }
-    100%{
-      opacity: 0;
-      transform: translate3d(140vw, 70vh, 0) rotate(25deg);
-    }
+  /* Right meteors (fly within right rail only) */
+  .right .meteor{ transform: rotate(-25deg); right:-60%; }
+  .right .meteor:nth-child(1){ top: 18%; animation: meteorRight 54s ease-in-out infinite; animation-delay: 14s; }
+  .right .meteor:nth-child(2){ top: 36%; width: 230px; animation: meteorRight 66s ease-in-out infinite; animation-delay: 28s; }
+  .right .meteor:nth-child(3){ top: 52%; width: 170px; animation: meteorRight 78s ease-in-out infinite; animation-delay: 44s; }
+
+  @keyframes meteorRight{
+    0%, 93% { opacity:0; transform: translate3d(40%, -20%, 0) rotate(-25deg); }
+    94% { opacity:.18; }
+    96% { opacity:.40; }
+    100% { opacity:0; transform: translate3d(-40%, 40%, 0) rotate(-25deg); }
   }
 
-  /* ====== LAYOUT ====== */
+  /* ====== MAIN UI ====== */
   .wrap{
     min-height:100%;
     display:flex;
@@ -235,6 +265,19 @@
     padding: 42px 18px;
     position: relative;
     z-index: 5;
+  }
+
+  /* subtle side glow overlay on top of background (still behind card) */
+  .wrap::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at left center, rgba(124,58,237,.06), transparent 46%),
+      radial-gradient(circle at right center, rgba(34,211,238,.06), transparent 46%);
+    opacity:.9;
+    z-index:-1;
   }
 
   .panel{
@@ -249,7 +292,7 @@
     position:relative;
   }
 
-  /* ====== NEON MOVING BORDER (SUBTLE) ====== */
+  /* Neon moving border (subtle) */
   .neon-border{
     position:relative;
     border-radius: 22px;
@@ -258,50 +301,34 @@
     content:"";
     position:absolute; inset:-2px;
     border-radius: inherit;
-    background: conic-gradient(
-      from 0deg,
-      var(--c2),
-      var(--c1),
-      var(--c4),
-      var(--c3),
-      var(--c2)
-    );
+    background: conic-gradient(from 0deg, var(--c2), var(--c1), var(--c4), var(--c3), var(--c2));
     filter: blur(6px);
     opacity: .16;
-    animation: spin 10s linear infinite;
+    animation: spinCard 10s linear infinite;
     z-index:-2;
   }
   .neon-border::after{
     content:"";
     position:absolute; inset:-1px;
     border-radius: inherit;
-    background: conic-gradient(
-      from 0deg,
+    background: conic-gradient(from 0deg,
       rgba(34,211,238,.75),
       rgba(124,58,237,.75),
       rgba(244,114,182,.75),
       rgba(52,211,153,.75),
       rgba(34,211,238,.75)
     );
-    animation: spin 12s linear infinite;
+    animation: spinCard 12s linear infinite;
     z-index:-1;
     opacity:.45;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     padding: 2px;
-    box-sizing: border-box;
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
-  @keyframes spin{
-    to{ transform: rotate(360deg); }
-  }
+  @keyframes spinCard{ to{ transform: rotate(360deg); } }
 
-  /* header */
   .head{
     display:flex;
     gap:12px;
@@ -309,20 +336,9 @@
     justify-content:space-between;
     margin-bottom: 14px;
   }
-  .title{
-    text-align:left;
-    line-height:1.1;
-  }
-  .title h1{
-    margin:0;
-    font-size: 20px;
-    letter-spacing:.2px;
-  }
-  .title p{
-    margin: 8px 0 0 0;
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .title{ text-align:left; line-height:1.1; }
+  .title h1{ margin:0; font-size: 20px; letter-spacing:.2px; }
+  .title p{ margin: 8px 0 0 0; color: var(--muted); font-size: 13px; }
 
   .badge{
     font-size:12px;
@@ -377,13 +393,11 @@
     border-color: rgba(255,255,255,.18);
   }
   button:active{ transform: translateY(0); }
-
   .primary{
     background: linear-gradient(135deg, rgba(34,211,238,.18), rgba(124,58,237,.18));
     border-color: rgba(34,211,238,.30);
   }
 
-  /* QR box with its own neon border */
   .qrwrap{
     margin-top: 16px;
     padding: 14px;
@@ -411,7 +425,6 @@
     min-height: 18px;
   }
 
-  /* success check animation */
   .check{
     width: 58px; height:58px;
     margin: 8px auto 0;
@@ -443,10 +456,14 @@
     text-align:center;
   }
 
-  /* Scan focus: redupkan background sesaat */
-  body.scan-focus .space{ opacity: .65; transition: opacity .35s ease; }
+  /* Scan focus (optional): reduce side anim a bit while QR appears */
+  body.scan-focus .side{ opacity:.80; transition: opacity .35s ease; }
 
-  @media (max-width:420px){
+  @media (max-width: 900px){
+    .side{ width: 18%; }
+  }
+  @media (max-width: 520px){
+    .side{ width: 16%; }
     .panel{ padding: 18px; }
     button{ min-width: 0; }
   }
@@ -462,22 +479,39 @@
 </head>
 
 <body>
-  <!-- SPACE BACKGROUND -->
+  <!-- SIDE-ONLY SPACE ANIMATION -->
   <div class="space">
-    <div class="stars"></div>
-    <div class="stars2"></div>
-    <div class="stars3"></div>
-    <div class="twinkle"></div>
+    <div class="center-calm"></div>
 
-    <div class="planet p1"></div>
-    <div class="planet p2"></div>
-    <div class="planet p3"></div>
+    <div class="side left">
+      <div class="stars"></div>
+      <div class="stars2"></div>
+      <div class="stars3"></div>
+      <div class="orbit"></div>
 
-    <!-- Rare meteor -->
-    <div class="meteor-field">
-      <span class="meteor"></span>
-      <span class="meteor"></span>
-      <span class="meteor"></span>
+      <div class="planet p1"></div>
+
+      <div class="meteor-field">
+        <span class="meteor"></span>
+        <span class="meteor"></span>
+        <span class="meteor"></span>
+      </div>
+    </div>
+
+    <div class="side right">
+      <div class="stars"></div>
+      <div class="stars2"></div>
+      <div class="stars3"></div>
+      <div class="orbit"></div>
+
+      <div class="planet p2"></div>
+      <div class="planet p3"></div>
+
+      <div class="meteor-field">
+        <span class="meteor"></span>
+        <span class="meteor"></span>
+        <span class="meteor"></span>
+      </div>
     </div>
   </div>
 
@@ -487,7 +521,6 @@
         <div class="head">
           <div class="title">
             <h1>QR Code Generator</h1>
-            <p>Ultra minimal space • neon border halus • meteor jarang muncul</p>
           </div>
           <div class="badge">BlesProduction</div>
         </div>
@@ -515,8 +548,6 @@
             <div class="status" id="statusText"></div>
           </div>
         </div>
-
-        <div class="foot">© <span id="year"></span> BlesProduction</div>
       </div>
     </div>
   </div>
@@ -532,7 +563,6 @@
   function getQRImageSrc(){
     const img = qrcodeContainer.querySelector("img");
     if (img) return img.src;
-
     const canvas = qrcodeContainer.querySelector("canvas");
     if (canvas) return canvas.toDataURL("image/png");
     return null;
@@ -551,7 +581,7 @@
     // subtle vibration (mobile)
     if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
 
-    // scan focus: redupkan bg sebentar
+    // scan focus: calm down sides briefly
     document.body.classList.add("scan-focus");
     setTimeout(()=>document.body.classList.remove("scan-focus"), 1500);
   }
@@ -619,7 +649,6 @@
   document.getElementById("downloadBtn").addEventListener("click", downloadQR);
   document.getElementById("printBtn").addEventListener("click", printQR);
 
-  // Enter to generate
   inputData.addEventListener("keydown", (e) => {
     if (e.key === "Enter") generateQRCode();
   });
